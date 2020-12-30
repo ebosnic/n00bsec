@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 import urllib.request, urllib.error, urllib.parse
 import socket
 import sys
@@ -24,7 +23,6 @@ import ssl
 import os
 import json
 from optparse import OptionParser
-
 
 class bcolors:
     HEADER = '\033[95m'
@@ -36,7 +34,6 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-
 # klijent zaglavlja koja se salju na definirani server u procesu http/s zahtjeva.
 client_headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:53.0)\
@@ -46,7 +43,6 @@ client_headers = {
     'Accept-Language': 'en-US;q=0.8,en;q=0.3',
     'Upgrade-Insecure-Requests': 1
  }
-
 
 # Siguronosna zaglavlja koja bi trebala biti konfigurirana na definiranom serveru.
 sec_headers = {
@@ -58,7 +54,6 @@ sec_headers = {
     'Content-Security-Policy': 'warning',
     'X-Permitted-Cross-Domain-Policies': 'warning',
     'Referrer-Policy': 'warning'
-
 }
 
 information_headers = {
@@ -86,7 +81,6 @@ def banner():
     print("=======================================================")
     print()
 
-
 def colorize(string, alert):
     color = {
         'error':    bcolors.PAO + string + bcolors.KRAJC,
@@ -96,7 +90,6 @@ def colorize(string, alert):
     }
     return color[alert] if alert in color else string
 
-
 def parse_headers(hdrs):
     global headers
     headers = dict((x,y) for x,y in hdrs)
@@ -105,7 +98,6 @@ def append_port(target, port):
     return target[:-1] + ':' + port + '/' \
         if target[-1:] == '/' \
         else target + ':' + port + '/'
-
 
 def set_proxy(proxy):
     if proxy is None:
@@ -123,7 +115,6 @@ def get_unsafe_context():
     context.verify_mode = ssl.CERT_NONE
     return context
 
-
 def normalize(target):
     try:
         if (socket.inet_aton(target)):
@@ -132,7 +123,6 @@ def normalize(target):
         pass
     finally:
         return target
-
 
 def print_error(e):
     sys.stdout = sys.__stdout__
@@ -149,7 +139,6 @@ def print_error(e):
     ignore it run the program with the \"-d\" option.")
             else:
                 print("Specificirani server koji provjeravate je izgleda nedostupan ({})".format(e.reason))
-
 
 def check_target(target, options):
     '''
@@ -189,13 +178,11 @@ def check_target(target, options):
     print("Nemrem procitati odgovor sa definiranog servera.")
     sys.exit(3)
 
-
 def is_https(target):
     '''
     Provjera dal' definirani server ima implementiran support za HTTPS kako bi Strict-Transport-Security funkcionirao
     '''
     return target.startswith('https://')
-
 
 def report(target, safe, unsafe):
     print("-------------------------------------------------------")
@@ -241,8 +228,6 @@ def main(options, targets):
     if hfile is not None:
         with open(hfile) as f:
             targets = f.read().splitlines()
-        
-
 
     for target in targets:
         if port is not None:
@@ -267,7 +252,6 @@ def main(options, targets):
                 json_headers["present"][safeh] = headers.get(safeh)
 
                 # Ovdje beremo brigu o specijalnim zaglavljima koja bi mogla imati lose vrijednosti
-
                 # X-XSS-Protection bi trebao bit ukljucen naravno.
                 if safeh == 'X-XSS-Protection' and headers.get(safeh) == '0':
                     print("[*] Header {} in place! (Value: {})".format(
