@@ -4,10 +4,14 @@ couple of python lines to check implementation and status of the header configur
 # Usage
 
 Make it executable
+<pre>
 chmod +x sheaders.py
+</pre>
 
 execute it against your target
+<pre>
 ./sheaders.py http://yourdnsvalue.here 
+</pre>
 
 read the output.
 
